@@ -431,6 +431,7 @@ function ProjectModal({ project, onClose }) {
         role: 'dialog',
         'aria-modal': 'true',
         'aria-label': `${project.name} details`,
+        'data-lenis-prevent': true,
         onClick: (e) => e.stopPropagation(),
       },
       h('button', { className: 'modal-close', type: 'button', onClick: onClose, 'aria-label': 'Close' }, '×'),
