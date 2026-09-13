@@ -28,11 +28,12 @@ const projects = [
     summary:
       'A React Native app that tracks when your products expire — skincare, food, medicine — with categories, reminders, an archive, and four themes.',
     details: [
-      'Add a product with a photo, start date and shelf life; the app tracks active / expiring / expired status and alerts you before things go bad.',
-      'Includes category filters, an archive, multi-language dates, and four themes (Light, Dark, Pink, Matcha).',
+      'Designed and built a mobile app that tracks expiration and opening dates for cosmetics and everyday products.',
+      'Product management features include categories, expiry calculations, filtering, archiving, and account functionality — backed by Node.js and MySQL services.',
+      'Implemented AI-assisted product scanning and handled mobile deployment through Expo/EAS, Google Play Console, and App Store Connect.',
       'Live on the App Store and Google Play.',
     ],
-    stack: ['React Native', 'Expo', 'iOS', 'Android'],
+    stack: ['React Native', 'Expo', 'Node.js', 'MySQL'],
     links: [
       { label: 'App Store', href: LINKS.appStore },
       { label: 'Google Play', href: LINKS.googlePlay },
@@ -80,11 +81,11 @@ const projects = [
     summary:
       'A social-deduction party game: create a room, share the link, and everyone votes to find the player who got a different word — in English or Arabic.',
     details: [
-      'Real-time multiplayer built with React and Node.js, backed by MySQL.',
-      'Players join a room by code, get a secret word by category, then vote in synced rounds with revealed results.',
-      'Full English / Arabic interface with right-to-left support.',
+      'A bilingual Arabic/English multiplayer party game for groups of up to 15 players — built with React, Vite, Node.js, Express, and MySQL.',
+      'Handles lobby creation, voting, synchronized reveals, and game-state management in real time.',
+      'Deployed the frontend, backend, and database as one complete web application, with full right-to-left support for Arabic.',
     ],
-    stack: ['React', 'Node.js', 'MySQL', 'Real-time'],
+    stack: ['React', 'Vite', 'Node.js', 'Express', 'MySQL'],
     links: [
       { label: 'Play live', href: LINKS.whoIsOut },
       { label: 'GitHub', href: LINKS.github },
@@ -96,16 +97,16 @@ const projects = [
 ];
 
 const skills = [
-  { group: 'Languages', items: ['Java', 'Python', 'JavaScript', 'SQL'] },
-  { group: 'Frontend', items: ['React', 'React Native', 'HTML5', 'CSS3', 'GSAP'] },
-  { group: 'Backend & data', items: ['Node.js', 'MySQL', 'Azure'] },
-  { group: 'Tools', items: ['Git', 'Eclipse', 'Visual Studio', 'Android Studio', 'Expo'] },
+  { group: 'Programming', items: ['Java', 'Python', 'JavaScript'] },
+  { group: 'Frontend', items: ['React', 'React Native', 'HTML5', 'CSS3'] },
+  { group: 'Backend & DB', items: ['Node.js', 'REST APIs', 'MySQL'] },
+  { group: 'Tools', items: ['Git', 'GitHub', 'Postman', 'Expo/EAS', 'VS Code'] },
 ];
 
 const facts = [
-  ['Education', 'Practical Software Engineering — associate degree, GPA 93'],
-  ['Focus', 'Frontend interfaces, dashboards, product UX'],
-  ['Languages', 'Arabic (native) · Hebrew (fluent) · English (intermediate)'],
+  ['Education', 'Practical Software Engineering — Technion, GPA 93, final project 100/100'],
+  ['Focus', 'Full-stack web & mobile development'],
+  ['Languages', 'Arabic (native) · Hebrew (fluent) · English (fluent)'],
 ];
 
 // Decorative floating bubbles drifting behind the whole page.
@@ -218,7 +219,7 @@ function Hero() {
         h(
           'h1',
           { className: 'hero-title' },
-          h('span', { className: 'line' }, 'Frontend developer'),
+          h('span', { className: 'line' }, 'Software developer'),
           h('span', { className: 'line' }, 'building useful,'),
           h('span', { className: 'line' }, 'expressive interfaces.')
         ),
@@ -281,7 +282,7 @@ function About() {
         h(
           'p',
           null,
-          'I’m a practical software-engineering graduate focused on frontend development. My work combines clear interface structure, a strong pink visual identity, readable content, and motion that feels designed rather than decorative.'
+          'I’m a practical software-engineering graduate from the Technion, experienced in full-stack web and mobile development — React, React Native, Node.js, and MySQL. This portfolio follows the same approach: clear structure, a strong pink identity, and motion that feels designed rather than decorative.'
         ),
         h(
           'dl',
@@ -529,7 +530,7 @@ function Contact() {
       h(
         'p',
         { className: 'contact-lead' },
-        'I’m looking for a frontend / product role where I can keep turning hard problems into clear interfaces. The fastest way to reach me is email.'
+        'I’m looking for a full-stack or mobile development role where I can keep turning hard problems into clear, working software. The fastest way to reach me is email.'
       ),
       h(
         'div',
