@@ -1,113 +1,28 @@
 const { createElement: h, useEffect, useState, useRef, Fragment } = React;
 
 /* ------------------------------------------------------------------ *
- *  Farah — all links live here; the page reads from this everywhere
- *  (hero, project cards, contact). Add per-repo GitHub links in the
- *  `links` array of a project if you want them to point at the repo
- *  instead of your profile.
+ *  Farah — the actual content (links, projects, skills, facts) lives
+ *  in content.json, not here, so the admin page (admin.html) can edit
+ *  and publish it without touching code. These four are filled in by
+ *  loadContent() below, before the first render.
  * ------------------------------------------------------------------ */
-const LINKS = {
-  email: 'farahdragon8@gmail.com',
-  linkedin: 'https://www.linkedin.com/in/farah-aqrt-256a32282/',
-  github: 'https://github.com/FarahAqrt',
-  appStore: 'https://apps.apple.com/us/app/x-or-not/id6756283785',
-  googlePlay: 'https://play.google.com/store/apps/details?id=com.farahaqrt.xornot',
-  whoIsOut: 'https://who-is-out-game.onrender.com',
-  cv: 'assets/about/resume-farah-aqrt.pdf',
-};
+let LINKS = {};
+let projects = [];
+let skills = [];
+let facts = [];
 
-const projects = [
-  {
-    id: 'x-or-not',
-    name: 'X Or Not',
-    type: 'Mobile app · iOS & Android',
-    // frame 'bare' = show the image on a soft card (these are marketing
-    // graphics). Swap `cover` for a clean landscape screenshot when you have one.
-    frame: 'bare',
-    cover: 'assets/x-or-not-app/Feature-graphic-1024-512.png',
-    summary:
-      'A React Native app that tracks when your products expire — skincare, food, medicine — with categories, reminders, an archive, and four themes.',
-    details: [
-      'Designed and built a mobile app that tracks expiration and opening dates for cosmetics and everyday products.',
-      'Product management features include categories, expiry calculations, filtering, archiving, and account functionality — backed by Node.js and MySQL services.',
-      'Implemented AI-assisted product scanning and handled mobile deployment through Expo/EAS, Google Play Console, and App Store Connect.',
-      'Live on the App Store and Google Play.',
-    ],
-    stack: ['React Native', 'Expo', 'Node.js', 'MySQL'],
-    links: [
-      { label: 'App Store', href: LINKS.appStore },
-      { label: 'Google Play', href: LINKS.googlePlay },
-    ],
-    gallery: [
-      { src: 'assets/x-or-not-app/screen-1.png', caption: 'Home — track every product in one place' },
-      { src: 'assets/x-or-not-app/screen-2.png', caption: 'Product detail — dates and status' },
-      { src: 'assets/x-or-not-app/screen-3.png', caption: 'Settings — themes and notifications' },
-      { src: 'assets/x-or-not-app/tablet-android-screen-1.png', caption: 'Tablet layout' },
-      { src: 'assets/x-or-not-app/merkiting-poster.png', caption: 'Feature highlights' },
-      { src: 'assets/x-or-not-app/Feature-graphic-1024-512.png', caption: 'Google Play feature graphic' },
-    ],
-  },
-  {
-    id: 'myschool',
-    name: 'MySchool',
-    type: 'Graduation project · School management web',
-    frame: 'browser',
-    cover: 'assets/myschool/01-teacher-dashboard.png',
-    summary:
-      'A full school-management platform with three separate interfaces — teacher, secretary, and student — covering classes, posts, chat, attendance, and user registration.',
-    details: [
-      'Built as my software-engineering final project. Three role-based interfaces share one system.',
-      'Teachers manage classes, posts and files, run group and private chat, and keep digital presence lists they can export to Excel.',
-      'The secretary side handles user search and filtering, bulk or single user registration, chat-warning notifications, and registration history.',
-    ],
-    stack: ['React', 'Node.js', 'MySQL', 'CSS'],
-    links: [{ label: 'GitHub', href: LINKS.github }],
-    gallery: [
-      { src: 'assets/myschool/01-teacher-dashboard.png', caption: 'Teacher dashboard — classes, calendar, group & private chat' },
-      { src: 'assets/myschool/02-teacher-class-posts.png', caption: 'Class page — posts, drafts and class actions' },
-      { src: 'assets/myschool/03-teacher-class-chat.png', caption: 'Class page with live chat and file sharing' },
-      { src: 'assets/myschool/04-presence-lists.png', caption: 'Presence lists with per-date comments, export to Excel' },
-      { src: 'assets/myschool/05-secretary-dashboard.png', caption: 'Secretary dashboard — user and registration tools' },
-      { src: 'assets/myschool/06-secretary-search-users.png', caption: 'Search users by id or name, filter by role and status' },
-      { src: 'assets/myschool/07-secretary-register-users.png', caption: 'Register users via Excel upload or an online form' },
-    ],
-  },
-  {
-    id: 'who-is-out',
-    name: 'Who Is Out',
-    type: 'Personal project · Bilingual multiplayer game',
-    frame: 'browser',
-    cover: 'assets/who-is-out-game/who-is-out-screenshot.png',
-    summary:
-      'A social-deduction party game: create a room, share the link, and everyone votes to find the player who got a different word — in English or Arabic.',
-    details: [
-      'A bilingual Arabic/English multiplayer party game for groups of up to 15 players — built with React, Vite, Node.js, Express, and MySQL.',
-      'Handles lobby creation, voting, synchronized reveals, and game-state management in real time.',
-      'Deployed the frontend, backend, and database as one complete web application, with full right-to-left support for Arabic.',
-    ],
-    stack: ['React', 'Vite', 'Node.js', 'Express', 'MySQL'],
-    links: [
-      { label: 'Play live', href: LINKS.whoIsOut },
-      { label: 'GitHub', href: LINKS.github },
-    ],
-    gallery: [
-      { src: 'assets/who-is-out-game/who-is-out-screenshot.png', caption: 'Landing — create or join a room' },
-    ],
-  },
-];
-
-const skills = [
-  { group: 'Programming', items: ['Java', 'Python', 'JavaScript'] },
-  { group: 'Frontend', items: ['React', 'React Native', 'HTML5', 'CSS3'] },
-  { group: 'Backend & DB', items: ['Node.js', 'REST APIs', 'MySQL'] },
-  { group: 'Tools', items: ['Git', 'GitHub', 'Postman', 'Expo/EAS', 'VS Code'] },
-];
-
-const facts = [
-  ['Education', 'Practical Software Engineering — Technion, GPA 93, final project 100/100'],
-  ['Focus', 'Full-stack web & mobile development'],
-  ['Languages', 'Arabic (native) · Hebrew (fluent) · English (fluent)'],
-];
+function applyContent(data) {
+  LINKS = data.links;
+  projects = data.projects.map((p) => ({
+    ...p,
+    links: (p.links || []).map((l) => ({
+      label: l.label,
+      href: l.linkKey ? LINKS[l.linkKey] : l.href,
+    })),
+  }));
+  skills = data.skills;
+  facts = data.facts;
+}
 
 // Decorative floating bubbles drifting behind the whole page.
 // Set to 0 to remove them entirely.
@@ -728,4 +643,19 @@ function App() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(h(App));
+fetch('content.json', { cache: 'no-store' })
+  .then((res) => {
+    if (!res.ok) throw new Error(`content.json ${res.status}`);
+    return res.json();
+  })
+  .then((data) => {
+    applyContent(data);
+    ReactDOM.createRoot(document.getElementById('root')).render(h(App));
+  })
+  .catch((err) => {
+    console.error('Failed to load content.json', err);
+    document.getElementById('root').innerHTML =
+      '<p style="max-width:520px;margin:15vh auto;padding:0 24px;font:16px/1.6 sans-serif;color:#7a1f50;text-align:center">' +
+      'Could not load the page content (content.json). If you just opened this file directly, ' +
+      'serve it over http instead — e.g. <code>npx serve</code> — or check your connection and reload.</p>';
+  });

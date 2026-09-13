@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Portfolio Admin</title>
+<style>
+  :root {
+    --ink: #241019; --muted: #7c5d6c; --rose: #f2559a; --rose-deep: #bd2f73;
+    --line: rgba(122,31,80,.16); --paper: #fff7fb; --paper-2: #ffeef6; --bad: #c62d4f; --good: #1f8a52;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: "Segoe UI", Arial, sans-serif; color: var(--ink);
+    background: linear-gradient(180deg,#fff4fa,#fde0ee); min-height: 100vh; padding-bottom: 120px;
+  }
+  header {
+    position: sticky; top: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; flex-wrap: wrap; padding: 14px 20px; background: rgba(255,244,250,.94); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  header h1 { font-size: 1.05rem; margin: 0; color: var(--rose-deep); }
+  header .right { display: flex; align-items: center; gap: 10px; font-size: .85rem; }
+  main { max-width: 880px; margin: 0 auto; padding: 24px 20px; }
+  section.card {
+    background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; margin-bottom: 22px;
+    box-shadow: 0 10px 30px rgba(132,42,92,.08);
+  }
+  section.card > h2 { margin: 0 0 4px; font-size: 1.1rem; }
+  section.card > p.hint { margin: 0 0 16px; color: var(--muted); font-size: .85rem; }
+  label { display: block; font-size: .78rem; font-weight: 700; color: var(--rose-deep); margin: 12px 0 4px; text-transform: uppercase; letter-spacing: .03em; }
+  label.first { margin-top: 0; }
+  input[type=text], input[type=url], input[type=password], textarea, select {
+    width: 100%; padding: 9px 11px; border: 1px solid var(--line); border-radius: 8px; font: inherit; font-size: .92rem;
+    background: var(--paper); color: var(--ink);
+  }
+  textarea { resize: vertical; min-height: 60px; }
+  small.field-hint { display:block; color: var(--muted); font-size: .76rem; margin-top: 3px; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .row > * { flex: 1; min-width: 160px; }
+  button {
+    font: inherit; cursor: pointer; border-radius: 999px; border: 1px solid var(--line); background: #fff;
+    padding: 8px 16px; font-weight: 700; font-size: .84rem; color: var(--rose-deep);
+  }
+  button:hover { background: var(--paper-2); }
+  button.primary { background: linear-gradient(135deg,var(--rose),var(--rose-deep)); color: #fff; border: none; }
+  button.primary:hover { filter: brightness(1.05); }
+  button.danger { color: var(--bad); }
+  button.small { padding: 5px 11px; font-size: .76rem; }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  .item-card {
+    border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; background: var(--paper-2);
+  }
+  .item-card .item-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .item-card .item-top strong { font-size: .95rem; }
+  .item-actions { display: flex; gap: 6px; }
+  .thumb-row { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+  .thumb-row img { width: 96px; height: 62px; object-fit: cover; border-radius: 6px; border: 1px solid var(--line); background: #241721; }
+  .thumb-row .thumb-controls { flex: 1; }
+  .gallery-list { display: grid; gap: 10px; margin-top: 8px; }
+  .gallery-item { display: grid; grid-template-columns: 96px 1fr auto; gap: 10px; align-items: center; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 8px; }
+  .gallery-item img { width: 96px; height: 62px; object-fit: cover; border-radius: 6px; background: #241721; }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .pill-row span { padding: 4px 10px; border-radius: 999px; background: #fff; border: 1px solid var(--line); font-size: .78rem; color: var(--rose-deep); }
+  .save-bar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: rgba(255,255,255,.98); border-top: 1px solid var(--line);
+    padding: 14px 20px; display: flex; align-items: center; gap: 14px; justify-content: center; flex-wrap: wrap;
+    box-shadow: 0 -8px 30px rgba(132,42,92,.12);
+  }
+  .save-bar .log { font-size: .82rem; color: var(--muted); max-width: 520px; }
+  .save-bar .log.bad { color: var(--bad); }
+  .save-bar .log.good { color: var(--good); }
+  .overlay {
+    position: fixed; inset: 0; z-index: 50; background: rgba(36,15,29,.55); display: flex; align-items: center; justify-content: center; padding: 20px;
+  }
+  .overlay .box { background: #fff; border-radius: 14px; padding: 26px 28px; max-width: 460px; width: 100%; }
+  .overlay .box h2 { margin-top: 0; }
+  .overlay .box ol { padding-left: 20px; font-size: .88rem; color: var(--muted); line-height: 1.6; }
+  .overlay .box a { color: var(--rose-deep); }
+  .token-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+  [hidden] { display: none !important; }
+  .add-row { margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🎀 Portfolio Admin</h1>
+  <div class="right">
+    <span id="tokenStatus"><span class="token-dot" style="background:#c62d4f"></span>Not connected</span>
+    <button id="tokenBtn" class="small">Connect GitHub</button>
+    <a href="https://farahaqrt.github.io/Portfolio/" target="_blank" rel="noreferrer"><button type="button" class="small">View live site ↗</button></a>
+  </div>
+</header>
+
+<main id="app">
+  <p style="text-align:center;color:var(--muted);padding:60px 0">Loading current content…</p>
+</main>
+
+<div class="save-bar">
+  <button id="reloadBtn" class="small" title="Discard local edits and reload from GitHub">Reload</button>
+  <button id="saveBtn" class="primary">Save &amp; Publish</button>
+  <span id="log" class="log"></span>
+</div>
+
+<div id="tokenOverlay" class="overlay" hidden>
+  <div class="box">
+    <h2>Connect to GitHub</h2>
+    <p style="color:var(--muted);font-size:.9rem">
+      To publish changes, this page needs a GitHub access token — a password-like key for your account.
+      It's saved only in <strong>this browser</strong> (localStorage) and used only to talk directly to
+      GitHub's API. It is never sent to me or anyone else.
+    </p>
+    <ol>
+      <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noreferrer">github.com/settings/personal-access-tokens/new</a></li>
+      <li>Resource owner: <strong>FarahAqrt</strong>. Repository access: <strong>Only select repositories</strong> → <strong>Portfolio</strong></li>
+      <li>Under Permissions → Repository permissions, set <strong>Contents: Read and write</strong></li>
+      <li>Generate the token and paste it below</li>
+    </ol>
+    <label class="first">Access token</label>
+    <input type="password" id="tokenInput" placeholder="github_pat_..." autocomplete="off" />
+    <div class="row" style="margin-top:16px">
+      <button id="tokenCancel">Cancel</button>
+      <button id="tokenSave" class="primary">Save token</button>
+    </div>
+    <p style="margin-top:14px"><button id="tokenForget" class="small danger" type="button">Forget saved token on this device</button></p>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  const OWNER = 'FarahAqrt';
+  const REPO = 'Portfolio';
+  const BRANCH = 'main';
+  const API = `https://api.github.com/repos/${OWNER}/${REPO}/contents/`;
+  const TOKEN_KEY = 'portfolio_admin_gh_pat';
+
+  const $ = (sel, el) => (el || document).querySelector(sel);
+  const $$ = (sel, el) => Array.from((el || document).querySelectorAll(sel));
+  const el = (tag, attrs, ...kids) => {
+    const node = document.createElement(tag);
+    Object.entries(attrs || {}).forEach(([k, v]) => {
+      if (k === 'text') node.textContent = v;
+      else if (k.startsWith('on') && typeof v === 'function') node.addEventListener(k.slice(2), v);
+      else if (v !== false && v != null) node.setAttribute(k, v === true ? '' : v);
+    });
+    kids.flat().forEach((k) => k != null && node.appendChild(typeof k === 'string' ? document.createTextNode(k) : k));
+    return node;
+  };
+
+  // ---------------------------------------------------------------- auth
+  function getToken() { return localStorage.getItem(TOKEN_KEY) || ''; }
+  function setToken(t) { t ? localStorage.setItem(TOKEN_KEY, t) : localStorage.removeItem(TOKEN_KEY); refreshTokenStatus(); }
+  function authHeaders() { const t = getToken(); return t ? { Authorization: 'token ' + t } : {}; }
+  function refreshTokenStatus() {
+    const has = Boolean(getToken());
+    $('#tokenStatus').innerHTML =
+      `<span class="token-dot" style="background:${has ? '#1f8a52' : '#c62d4f'}"></span>${has ? 'Connected' : 'Not connected'}`;
+  }
+
+  // ---------------------------------------------------------- b64 + api
+  function b64EncodeUtf8(str) {
+    const bytes = new TextEncoder().encode(str);
+    let bin = ''; bytes.forEach((b) => (bin += String.fromCharCode(b)));
+    return btoa(bin);
+  }
+  function b64DecodeUtf8(b64) {
+    const bin = atob(b64.replace(/\n/g, ''));
+    const bytes = Uint8Array.from(bin, (c) => c.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+  }
+  function encodeRepoPath(path) { return path.split('/').map(encodeURIComponent).join('/'); }
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(r.result.split(',')[1]);
+      r.onerror = reject;
+      r.readAsDataURL(file);
+    });
+  }
+
+  async function ghGetFile(path) {
+    const res = await fetch(API + encodeRepoPath(path) + `?ref=${BRANCH}&_=${Date.now()}`, { headers: authHeaders() });
+    if (res.status === 404) return null;
+    if (!res.ok) throw new Error(`Reading ${path} failed (${res.status})`);
+    return res.json(); // { sha, content, ... }
+  }
+
+  async function ghPutFile(path, base64Content, sha, message) {
+    if (!getToken()) throw new Error('No GitHub token connected.');
+    const body = { message, content: base64Content, branch: BRANCH };
+    if (sha) body.sha = sha;
+    const res = await fetch(API + encodeRepoPath(path), {
+      method: 'PUT',
+      headers: Object.assign({ 'Content-Type': 'application/json' }, authHeaders()),
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(`Saving ${path} failed (${res.status}): ${err.message || 'unknown error'}`);
+    }
+    return res.json();
+  }
+
+  function sanitizeFilename(name) {
+    return name.toLowerCase().trim().replace(/[^a-z0-9.\-]+/g, '-').replace(/-+/g, '-');
+  }
+  function folderOf(path) { const p = path.split('/'); p.pop(); return p.join('/'); }
+
+  // -------------------------------------------------------------- state
+  let state = null;       // parsed content.json
+  let contentSha = null;  // sha of content.json as last fetched
+  let pendingUploads = []; // [{ file, apply(newPath) }]
+  let dirty = false;
+
+  function markDirty() { dirty = true; }
+
+  window.addEventListener('beforeunload', (e) => {
+    if (dirty) { e.preventDefault(); e.returnValue = ''; }
+  });
+
+  async function loadContent() {
+    const app = $('#app');
+    app.innerHTML = '';
+    app.appendChild(el('p', { style: 'text-align:center;color:var(--muted);padding:60px 0', text: 'Loading current content…' }));
+    try {
+      const file = await ghGetFile('content.json');
+      if (!file) throw new Error('content.json not found in the repo.');
+      contentSha = file.sha;
+      state = JSON.parse(b64DecodeUtf8(file.content));
+      pendingUploads = [];
+      dirty = false;
+      render();
+    } catch (e) {
+      app.innerHTML = '';
+      app.appendChild(el('p', { style: 'color:var(--bad);text-align:center;padding:60px 20px', text: 'Could not load content.json: ' + e.message }));
+    }
+  }
+
+  // ------------------------------------------------------------ render
+  function render() {
+    const app = $('#app');
+    app.innerHTML = '';
+    app.appendChild(renderLinks());
+    app.appendChild(renderProjects());
+    app.appendChild(renderSkills());
+    app.appendChild(renderFacts());
+    app.appendChild(renderFiles());
+  }
+
+  function fieldRow(labelText, value, onInput, opts) {
+    opts = opts || {};
+    const input = el(opts.textarea ? 'textarea' : 'input', {
+      type: opts.type || 'text',
+      value: opts.textarea ? undefined : value,
+      oninput: (e) => { onInput(e.target.value); markDirty(); },
+    });
+    if (opts.textarea) input.value = value || '';
+    const wrap = el('div', {}, el('label', { class: opts.first ? 'first' : '', text: labelText }), input);
+    if (opts.hint) wrap.appendChild(el('small', { class: 'field-hint', text: opts.hint }));
+    return wrap;
+  }
+
+  // ---- Links -------------------------------------------------------
+  function renderLinks() {
+    const card = el('section', { class: 'card' },
+      el('h2', { text: 'Links' }),
+      el('p', { class: 'hint', text: 'Used across the site — hero, project buttons, and the contact section.' })
+    );
+    const labels = {
+      email: 'Email', linkedin: 'LinkedIn URL', github: 'GitHub profile URL',
+      appStore: 'X Or Not — App Store URL', googlePlay: 'X Or Not — Google Play URL',
+      whoIsOut: 'Who Is Out — live URL', cv: 'CV file path (in this repo)',
+    };
+    Object.keys(labels).forEach((key, i) => {
+      card.appendChild(fieldRow(labels[key], state.links[key] || '', (v) => (state.links[key] = v), { first: i === 0 }));
+    });
+    return card;
+  }
+
+  // ---- Projects ------------------------------------------------------
+  function renderProjects() {
+    const card = el('section', { class: 'card' },
+      el('h2', { text: 'Projects' }),
+      el('p', { class: 'hint', text: 'Order here is the order they appear on the site. Use ↑ / ↓ to reorder.' })
+    );
+    state.projects.forEach((p, i) => card.appendChild(renderProjectCard(p, i)));
+    card.appendChild(el('div', { class: 'add-row' }, el('button', {
+      type: 'button',
+      onclick: () => {
+        state.projects.push({
+          id: 'new-project-' + Date.now(), name: 'New Project', type: 'Project type',
+          frame: 'browser', cover: '', summary: '', details: [''], stack: [], links: [], gallery: [],
+        });
+        markDirty(); render();
+      },
+    }, '+ Add project')));
+    return card;
+  }
+
+  function renderProjectCard(p, index) {
+    const box = el('div', { class: 'item-card' });
+    const top = el('div', { class: 'item-top' },
+      el('strong', { text: p.name || '(untitled)' }),
+      el('div', { class: 'item-actions' },
+        el('button', { class: 'small', type: 'button', title: 'Move up', disabled: index === 0 || undefined,
+          onclick: () => { [state.projects[index - 1], state.projects[index]] = [state.projects[index], state.projects[index - 1]]; markDirty(); render(); } }, '↑'),
+        el('button', { class: 'small', type: 'button', title: 'Move down', disabled: index === state.projects.length - 1 || undefined,
+          onclick: () => { [state.projects[index + 1], state.projects[index]] = [state.projects[index], state.projects[index + 1]]; markDirty(); render(); } }, '↓'),
+        el('button', { class: 'small danger', type: 'button',
+          onclick: () => { if (confirm('Remove "' + p.name + '"?')) { state.projects.splice(index, 1); markDirty(); render(); } } }, 'Remove')
+      )
+    );
+    box.appendChild(top);
+
+    box.appendChild(fieldRow('Name', p.name, (v) => { p.name = v; top.querySelector('strong').textContent = v; }, { first: true }));
+    box.appendChild(fieldRow('Type / subtitle', p.type, (v) => (p.type = v)));
+
+    const frameSelect = el('select', { onchange: (e) => { p.frame = e.target.value; markDirty(); } },
+      el('option', { value: 'browser', selected: p.frame === 'browser' || undefined }, 'Browser frame (web screenshots)'),
+      el('option', { value: 'bare', selected: p.frame === 'bare' || undefined }, 'Bare card (app graphics)')
+    );
+    box.appendChild(el('div', {}, el('label', { text: 'Cover style' }), frameSelect));
+
+    box.appendChild(fieldRow('Summary (shown on the card)', p.summary, (v) => (p.summary = v), { textarea: true }));
+
+    // details bullets
+    box.appendChild(el('label', { text: 'Details (shown when opened — one per box)' }));
+    const detailsWrap = el('div', {});
+    (p.details || []).forEach((d, di) => {
+      const ta = el('textarea', { oninput: (e) => { p.details[di] = e.target.value; markDirty(); } });
+      ta.value = d;
+      detailsWrap.appendChild(el('div', { class: 'row', style: 'align-items:flex-start;margin-bottom:6px' },
+        ta,
+        el('button', { class: 'small danger', type: 'button', style: 'flex:0',
+          onclick: () => { p.details.splice(di, 1); markDirty(); render(); } }, '✕')
+      ));
+    });
+    box.appendChild(detailsWrap);
+    box.appendChild(el('button', { class: 'small', type: 'button', style: 'margin-top:4px',
+      onclick: () => { p.details = p.details || []; p.details.push(''); markDirty(); render(); } }, '+ Add detail'));
+
+    // stack
+    box.appendChild(fieldRow('Tech stack (comma-separated)', (p.stack || []).join(', '),
+      (v) => (p.stack = v.split(',').map((s) => s.trim()).filter(Boolean)), { hint: 'e.g. React, Node.js, MySQL' }));
+
+    // links
+    box.appendChild(el('label', { text: 'Buttons' }));
+    const linksWrap = el('div', {});
+    (p.links || []).forEach((l, li) => {
+      const labelInput = el('input', { type: 'text', value: l.label, oninput: (e) => { l.label = e.target.value; markDirty(); } });
+      const keySelect = el('select', { onchange: (e) => { l.linkKey = e.target.value; markDirty(); } });
+      Object.keys(state.links).forEach((k) => keySelect.appendChild(el('option', { value: k, selected: l.linkKey === k || undefined }, k)));
+      linksWrap.appendChild(el('div', { class: 'row', style: 'margin-bottom:6px' },
+        labelInput, keySelect,
+        el('button', { class: 'small danger', type: 'button', style: 'flex:0',
+          onclick: () => { p.links.splice(li, 1); markDirty(); render(); } }, '✕')
+      ));
+    });
+    box.appendChild(linksWrap);
+    box.appendChild(el('button', { class: 'small', type: 'button',
+      onclick: () => { p.links = p.links || []; p.links.push({ label: 'Label', linkKey: Object.keys(state.links)[0] }); markDirty(); render(); } }, '+ Add button'));
+
+    // cover image
+    box.appendChild(el('label', { text: 'Cover image' }));
+    const coverImg = el('img', { src: p.cover || '', alt: '' });
+    coverImg.style.cssText = 'width:140px;height:90px;object-fit:cover;border-radius:8px;background:#241721;border:1px solid var(--line)';
+    const coverFile = el('input', { type: 'file', accept: 'image/*' });
+    coverFile.addEventListener('change', () => {
+      const file = coverFile.files[0];
+      if (!file) return;
+      const url = URL.createObjectURL(file);
+      coverImg.src = url;
+      const targetPath = p.cover || `assets/${p.id}/${sanitizeFilename(file.name)}`;
+      addPendingUpload(targetPath, file, () => { p.cover = targetPath; });
+    });
+    box.appendChild(el('div', { class: 'thumb-row' }, coverImg, el('div', { class: 'thumb-controls' }, coverFile,
+      el('small', { class: 'field-hint', text: p.cover || '(no image set)' }))));
+
+    // gallery
+    box.appendChild(el('label', { text: 'Screenshot gallery (shown in "View screens")' }));
+    const galleryWrap = el('div', { class: 'gallery-list' });
+    (p.gallery || []).forEach((g, gi) => {
+      const img = el('img', { src: g.src, alt: '' });
+      const captionInput = el('input', { type: 'text', value: g.caption, oninput: (e) => { g.caption = e.target.value; markDirty(); } });
+      const replaceFile = el('input', { type: 'file', accept: 'image/*', title: 'Replace this image' });
+      replaceFile.addEventListener('change', () => {
+        const file = replaceFile.files[0];
+        if (!file) return;
+        const url = URL.createObjectURL(file);
+        img.src = url;
+        addPendingUpload(g.src, file, () => {});
+      });
+      galleryWrap.appendChild(el('div', { class: 'gallery-item' },
+        img,
+        el('div', {}, captionInput, el('small', { class: 'field-hint', text: g.src }), replaceFile),
+        el('button', { class: 'small danger', type: 'button',
+          onclick: () => { if (confirm('Remove this image from the gallery?')) { p.gallery.splice(gi, 1); markDirty(); render(); } } }, '✕')
+      ));
+    });
+    box.appendChild(galleryWrap);
+    const addGalleryFile = el('input', { type: 'file', accept: 'image/*' });
+    addGalleryFile.addEventListener('change', () => {
+      const file = addGalleryFile.files[0];
+      if (!file) return;
+      const path = `${folderOf(p.cover || `assets/${p.id}/x`)}/${sanitizeFilename(file.name)}`;
+      p.gallery = p.gallery || [];
+      p.gallery.push({ src: path, caption: file.name.replace(/\.[^.]+$/, '') });
+      addPendingUpload(path, file, () => {});
+      markDirty(); render();
+    });
+    box.appendChild(el('div', { class: 'add-row' }, el('label', { text: 'Add a screenshot' }), addGalleryFile));
+
+    return box;
+  }
+
+  // ---- Skills --------------------------------------------------------
+  function renderSkills() {
+    const card = el('section', { class: 'card' },
+      el('h2', { text: 'Skills' }),
+      el('p', { class: 'hint', text: 'Shown in the "What I build with" section.' })
+    );
+    state.skills.forEach((grp, gi) => {
+      card.appendChild(el('div', { class: 'item-card' },
+        el('div', { class: 'row' },
+          el('div', {}, el('label', { class: 'first', text: 'Group name' }),
+            el('input', { type: 'text', value: grp.group, oninput: (e) => { grp.group = e.target.value; markDirty(); } })),
+          el('button', { class: 'small danger', type: 'button', style: 'align-self:flex-end',
+            onclick: () => { state.skills.splice(gi, 1); markDirty(); render(); } }, 'Remove group')
+        ),
+        el('label', { text: 'Skills (comma-separated)' }),
+        el('input', { type: 'text', value: grp.items.join(', '),
+          oninput: (e) => { grp.items = e.target.value.split(',').map((s) => s.trim()).filter(Boolean); markDirty(); } })
+      ));
+    });
+    card.appendChild(el('button', { class: 'small', type: 'button',
+      onclick: () => { state.skills.push({ group: 'New group', items: [] }); markDirty(); render(); } }, '+ Add group'));
+    return card;
+  }
+
+  // ---- Facts -----------------------------------------------------------
+  function renderFacts() {
+    const card = el('section', { class: 'card' },
+      el('h2', { text: 'About — quick facts' }),
+      el('p', { class: 'hint', text: 'The small key/value list under the About text.' })
+    );
+    state.facts.forEach((pair, fi) => {
+      card.appendChild(el('div', { class: 'row', style: 'margin-bottom:8px' },
+        el('input', { type: 'text', value: pair[0], oninput: (e) => { pair[0] = e.target.value; markDirty(); }, placeholder: 'Label' }),
+        el('input', { type: 'text', value: pair[1], oninput: (e) => { pair[1] = e.target.value; markDirty(); }, placeholder: 'Value' }),
+        el('button', { class: 'small danger', type: 'button', style: 'flex:0',
+          onclick: () => { state.facts.splice(fi, 1); markDirty(); render(); } }, '✕')
+      ));
+    });
+    card.appendChild(el('button', { class: 'small', type: 'button',
+      onclick: () => { state.facts.push(['Label', 'Value']); markDirty(); render(); } }, '+ Add row'));
+    return card;
+  }
+
+  // ---- Resume / CV files ----------------------------------------------
+  function renderFiles() {
+    const card = el('section', { class: 'card' },
+      el('h2', { text: 'Resume & CV screenshot' }),
+      el('p', { class: 'hint', text: 'Replaces the files shown in the About section, keeping the same filenames.' })
+    );
+    const cvScreenshotPath = 'assets/about/cv-screenshot.png';
+    const screenshotImg = el('img', { src: cvScreenshotPath });
+    screenshotImg.style.cssText = 'width:140px;height:auto;max-height:100px;object-fit:cover;border-radius:8px;border:1px solid var(--line)';
+    const screenshotFile = el('input', { type: 'file', accept: 'image/*' });
+    screenshotFile.addEventListener('change', () => {
+      const file = screenshotFile.files[0];
+      if (!file) return;
+      screenshotImg.src = URL.createObjectURL(file);
+      addPendingUpload(cvScreenshotPath, file, () => {});
+    });
+    card.appendChild(el('div', { class: 'thumb-row' }, screenshotImg,
+      el('div', { class: 'thumb-controls' }, el('label', { class: 'first', text: 'CV screenshot (PNG/JPG)' }), screenshotFile)));
+
+    const cvPath = state.links.cv;
+    const cvFile = el('input', { type: 'file', accept: 'application/pdf' });
+    cvFile.addEventListener('change', () => {
+      const file = cvFile.files[0];
+      if (!file) return;
+      addPendingUpload(cvPath, file, () => {});
+      cvPathHint.textContent = 'Selected: ' + file.name + ' → will replace ' + cvPath;
+    });
+    const cvPathHint = el('small', { class: 'field-hint', text: 'Current path: ' + cvPath });
+    card.appendChild(el('div', { style: 'margin-top:16px' },
+      el('label', { text: 'CV PDF' }), cvFile, cvPathHint));
+
+    return card;
+  }
+
+  // -------------------------------------------------- pending uploads
+  function addPendingUpload(path, file, apply) {
+    pendingUploads = pendingUploads.filter((u) => u.path !== path);
+    pendingUploads.push({ path, file, apply });
+    markDirty();
+    setLog(`${pendingUploads.length} file${pendingUploads.length > 1 ? 's' : ''} queued to upload on Save.`, '');
+  }
+
+  // ------------------------------------------------------------- save
+  function setLog(text, kind) {
+    const logEl = $('#log');
+    logEl.textContent = text;
+    logEl.className = 'log' + (kind ? ' ' + kind : '');
+  }
+
+  async function saveAll() {
+    if (!state) return;
+    if (!getToken()) { openTokenOverlay(); return; }
+    const saveBtn = $('#saveBtn');
+    saveBtn.disabled = true;
+    try {
+      for (let i = 0; i < pendingUploads.length; i++) {
+        const u = pendingUploads[i];
+        setLog(`Uploading image ${i + 1} of ${pendingUploads.length} (${u.file.name})…`, '');
+        const existing = await ghGetFile(u.path);
+        const base64 = await fileToBase64(u.file);
+        await ghPutFile(u.path, base64, existing ? existing.sha : null, `Admin: update ${u.path}`);
+        u.apply(u.path);
+      }
+      setLog('Saving content…', '');
+      const latest = await ghGetFile('content.json'); // refetch sha in case it moved
+      const json = JSON.stringify(state, null, 2) + '\n';
+      await ghPutFile('content.json', b64EncodeUtf8(json), latest ? latest.sha : contentSha, 'Admin: update portfolio content');
+      pendingUploads = [];
+      dirty = false;
+      setLog('✓ Published! Live on your site in about a minute.', 'good');
+    } catch (e) {
+      setLog('✕ ' + e.message, 'bad');
+    } finally {
+      saveBtn.disabled = false;
+    }
+  }
+
+  // --------------------------------------------------------- token UI
+  function openTokenOverlay() { $('#tokenOverlay').hidden = false; $('#tokenInput').value = ''; $('#tokenInput').focus(); }
+  function closeTokenOverlay() { $('#tokenOverlay').hidden = true; }
+
+  $('#tokenBtn').addEventListener('click', openTokenOverlay);
+  $('#tokenCancel').addEventListener('click', closeTokenOverlay);
+  $('#tokenSave').addEventListener('click', () => {
+    const v = $('#tokenInput').value.trim();
+    if (!v) return;
+    setToken(v);
+    closeTokenOverlay();
+    setLog('GitHub connected.', 'good');
+  });
+  $('#tokenForget').addEventListener('click', () => {
+    setToken('');
+    setLog('Token forgotten on this device.', '');
+  });
+  $('#tokenInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('#tokenSave').click(); });
+
+  $('#saveBtn').addEventListener('click', saveAll);
+  $('#reloadBtn').addEventListener('click', () => {
+    if (dirty && !confirm('Discard local edits and reload from GitHub?')) return;
+    loadContent();
+  });
+
+  refreshTokenStatus();
+  loadContent();
+})();
+</script>
+</body>
+</html>
