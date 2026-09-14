@@ -22,18 +22,47 @@
         "Implemented AI-assisted product scanning and handled mobile deployment through Expo/EAS, Google Play Console, and App Store Connect.",
         "Live on the App Store and Google Play."
       ],
-      "stack": ["React Native", "Expo", "Node.js", "MySQL"],
+      "stack": [
+        "React Native",
+        "Expo",
+        "Node.js",
+        "MySQL"
+      ],
       "links": [
-        { "label": "App Store", "linkKey": "appStore" },
-        { "label": "Google Play", "linkKey": "googlePlay" }
+        {
+          "label": "App Store",
+          "linkKey": "appStore"
+        },
+        {
+          "label": "Google Play",
+          "linkKey": "googlePlay"
+        }
       ],
       "gallery": [
-        { "src": "assets/x-or-not-app/screen-1.png", "caption": "Home — track every product in one place" },
-        { "src": "assets/x-or-not-app/screen-2.png", "caption": "Product detail — dates and status" },
-        { "src": "assets/x-or-not-app/screen-3.png", "caption": "Settings — themes and notifications" },
-        { "src": "assets/x-or-not-app/tablet-android-screen-1.png", "caption": "Tablet layout" },
-        { "src": "assets/x-or-not-app/merkiting-poster.png", "caption": "Feature highlights" },
-        { "src": "assets/x-or-not-app/Feature-graphic-1024-512.png", "caption": "Google Play feature graphic" }
+        {
+          "src": "assets/x-or-not-app/screen-1.png",
+          "caption": "Home — track every product in one place"
+        },
+        {
+          "src": "assets/x-or-not-app/screen-2.png",
+          "caption": "Product detail — dates and status"
+        },
+        {
+          "src": "assets/x-or-not-app/screen-3.png",
+          "caption": "Settings — themes and notifications"
+        },
+        {
+          "src": "assets/x-or-not-app/tablet-android-screen-1.png",
+          "caption": "Tablet layout"
+        },
+        {
+          "src": "assets/x-or-not-app/merkiting-poster.png",
+          "caption": "Feature highlights"
+        },
+        {
+          "src": "assets/x-or-not-app/Feature-graphic-1024-512.png",
+          "caption": "Google Play feature graphic"
+        }
       ]
     },
     {
@@ -48,16 +77,47 @@
         "Teachers manage classes, posts and files, run group and private chat, and keep digital presence lists they can export to Excel.",
         "The secretary side handles user search and filtering, bulk or single user registration, chat-warning notifications, and registration history."
       ],
-      "stack": ["React", "Node.js", "MySQL", "CSS"],
-      "links": [{ "label": "GitHub", "linkKey": "github" }],
+      "stack": [
+        "React",
+        "Node.js",
+        "MySQL",
+        "CSS"
+      ],
+      "links": [
+        {
+          "label": "GitHub",
+          "linkKey": "github"
+        }
+      ],
       "gallery": [
-        { "src": "assets/myschool/01-teacher-dashboard.png", "caption": "Teacher dashboard — classes, calendar, group & private chat" },
-        { "src": "assets/myschool/02-teacher-class-posts.png", "caption": "Class page — posts, drafts and class actions" },
-        { "src": "assets/myschool/03-teacher-class-chat.png", "caption": "Class page with live chat and file sharing" },
-        { "src": "assets/myschool/04-presence-lists.png", "caption": "Presence lists with per-date comments, export to Excel" },
-        { "src": "assets/myschool/05-secretary-dashboard.png", "caption": "Secretary dashboard — user and registration tools" },
-        { "src": "assets/myschool/06-secretary-search-users.png", "caption": "Search users by id or name, filter by role and status" },
-        { "src": "assets/myschool/07-secretary-register-users.png", "caption": "Register users via Excel upload or an online form" }
+        {
+          "src": "assets/myschool/01-teacher-dashboard.png",
+          "caption": "Teacher dashboard — classes, calendar, group & private chat"
+        },
+        {
+          "src": "assets/myschool/02-teacher-class-posts.png",
+          "caption": "Class page — posts, drafts and class actions"
+        },
+        {
+          "src": "assets/myschool/03-teacher-class-chat.png",
+          "caption": "Class page with live chat and file sharing"
+        },
+        {
+          "src": "assets/myschool/04-presence-lists.png",
+          "caption": "Presence lists with per-date comments, export to Excel"
+        },
+        {
+          "src": "assets/myschool/05-secretary-dashboard.png",
+          "caption": "Secretary dashboard — user and registration tools"
+        },
+        {
+          "src": "assets/myschool/06-secretary-search-users.png",
+          "caption": "Search users by id or name, filter by role and status"
+        },
+        {
+          "src": "assets/myschool/07-secretary-register-users.png",
+          "caption": "Register users via Excel upload or an online form"
+        }
       ]
     },
     {
@@ -72,25 +132,80 @@
         "Handles lobby creation, voting, synchronized reveals, and game-state management in real time.",
         "Deployed the frontend, backend, and database as one complete web application, with full right-to-left support for Arabic."
       ],
-      "stack": ["React", "Vite", "Node.js", "Express", "MySQL"],
+      "stack": [
+        "React",
+        "Vite",
+        "Node.js",
+        "Express",
+        "MySQL"
+      ],
       "links": [
-        { "label": "Play live", "linkKey": "whoIsOut" },
-        { "label": "GitHub", "linkKey": "github" }
+        {
+          "label": "Play live",
+          "linkKey": "whoIsOut"
+        },
+        {
+          "label": "GitHub",
+          "linkKey": "github"
+        }
       ],
       "gallery": [
-        { "src": "assets/who-is-out-game/who-is-out-screenshot.png", "caption": "Landing — create or join a room" }
+        {
+          "src": "assets/who-is-out-game/who-is-out-screenshot.png",
+          "caption": "Landing — create or join a room"
+        }
       ]
     }
   ],
   "skills": [
-    { "group": "Programming", "items": ["Java", "Python", "JavaScript"] },
-    { "group": "Frontend", "items": ["React", "React Native", "HTML5", "CSS3"] },
-    { "group": "Backend & DB", "items": ["Node.js", "REST APIs", "MySQL"] },
-    { "group": "Tools", "items": ["Git", "GitHub", "Postman", "Expo/EAS", "VS Code"] }
+    {
+      "group": "Programming",
+      "items": [
+        "Java",
+        "Python",
+        "JavaScript"
+      ]
+    },
+    {
+      "group": "Frontend",
+      "items": [
+        "React",
+        "React Native",
+        "HTML5",
+        "CSS3"
+      ]
+    },
+    {
+      "group": "Backend & DB",
+      "items": [
+        "Node.js",
+        "REST APIs",
+        "MySQL"
+      ]
+    },
+    {
+      "group": "Tools",
+      "items": [
+        "Git",
+        "GitHub",
+        "Postman",
+        "Expo/EAS",
+        "VS Code"
+      ]
+    }
   ],
   "facts": [
-    ["Education", "Practical Software Engineering — Technion, GPA 93, final project 100/100"],
-    ["Focus", "Full-stack web & mobile development"],
-    ["Languages", "Arabic (native) · Hebrew (fluent) · English (fluent)"]
+    [
+      "Education",
+      "Practical Software Engineering — Technion, GPA 93, final project 100/100"
+    ],
+    [
+      "Focus",
+      "Full-stack web & mobile development"
+    ],
+    [
+      "Languages",
+      "Arabic (native) · Hebrew (fluent) · English (fluent)"
+    ]
   ]
 }
